@@ -1,0 +1,34 @@
+﻿<Window x:Class="PassManager.Forms.NewColumn"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PassManager.Forms"
+        mc:Ignorable="d"
+        Title="Nuevas credenciales" Height="250" Width="350" ResizeMode="CanMinimize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Height="Auto" Width="Auto" LastChildFill="True">
+            <!--Description-->
+            <Label DockPanel.Dock="Top" Margin="10,0,0,2" FontSize="12">
+                Descripción
+            </Label>
+            <TextBox DockPanel.Dock="Top" Width="auto" x:Name="description" Margin="10,0,10,5"/>
+            <!--UserName-->
+            <Label DockPanel.Dock="Top" Margin="10,0,0,2" FontSize="12">
+                Nombre de usuario
+            </Label>
+            <TextBox DockPanel.Dock="Top" Width="auto" x:Name="userName" Margin="10,0,10,5" />
+            <!--Password-->
+            <Label DockPanel.Dock="Top" Margin="10,0,0,2" FontSize="12">
+                Contraseña
+            </Label>
+            <TextBox DockPanel.Dock="Top" Width="auto" x:Name="password" Margin="10,0,10,5"/>
+            <DockPanel Height="Auto" Width="Auto" LastChildFill="True">
+                <Button  DockPanel.Dock="Top" Width="auto" x:Name="btnSave" Content="Aceptar" Click="btnSave_Click" Margin="10,0,10,0" Cursor="Hand"/>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>

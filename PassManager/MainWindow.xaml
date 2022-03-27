@@ -1,0 +1,28 @@
+﻿<Window x:Class="PassManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PassManager"
+        mc:Ignorable="d"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="PassManager" Height="600" Width="500" ResizeMode="CanMinimize">
+
+    <!--main grid-->
+    <Grid Height="584" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Añadir" Margin="10,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="auto" Cursor="Hand"/>
+        <DataGrid Margin="10,50,10,10" Name="DataGrid" Visibility="Visible" GridLinesVisibility="None" BorderThickness="0" CanUserResizeColumns="False" CanUserResizeRows="False" Background="White" RowEditEnding="DataGrid_RowEditEnding" AutoGenerateColumns="False" HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding _id}" Visibility="Hidden" Width="*"/>
+                <DataGridTextColumn Header="Descripción" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                <DataGridTextColumn Header="Usuario" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                <DataGridTextColumn Header="Contraseña" Binding="{Binding password, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+
+</Window>
