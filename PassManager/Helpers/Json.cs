@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace PassManager.Helpers
 {
     public class Json
     {
-        private static readonly string FolderPath = $"{Path.GetTempPath()}PassManager";
+        private static readonly string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PassManager");
 
         private static string GetFileName(string name)
         {
@@ -56,9 +52,11 @@ namespace PassManager.Helpers
         {
             string fullPath = Path.Combine(FolderPath, GetFileName(name));
 
+            if (!Directory.Exists(FolderPath)) Directory.CreateDirectory(FolderPath);
+            
             if (!File.Exists(fullPath))
             {
-                File.Create(fullPath);
+                File.Create(fullPath).Close();
 
                 return default;
             }
