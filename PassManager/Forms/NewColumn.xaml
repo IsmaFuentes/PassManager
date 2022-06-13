@@ -18,7 +18,7 @@
             <TextBox DockPanel.Dock="Top" Width="auto" x:Name="description" Margin="10,0,10,5"/>
             <!--UserName-->
             <Label DockPanel.Dock="Top" Margin="10,0,0,2" FontSize="12">
-                Nombre de usuario
+                Usuario
             </Label>
             <TextBox DockPanel.Dock="Top" Width="auto" x:Name="userName" Margin="10,0,10,5" />
             <!--Password-->
