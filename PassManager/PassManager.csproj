@@ -5,7 +5,12 @@
     <!--<TargetFramework>net5.0-windows10.0.18362.0</TargetFramework>-->
       <TargetFramework>net6.0-windows10.0.18362.0</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>lock.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="lock.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ModernWpfUI" Version="0.9.4" />

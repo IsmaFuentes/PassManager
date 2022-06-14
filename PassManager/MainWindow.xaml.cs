@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
-using PassManager.Forms;
 using PassManager.Models;
 
 namespace PassManager
@@ -30,22 +29,23 @@ namespace PassManager
             this.InvalidateVisual();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Add(object sender, RoutedEventArgs e)
         {
-            NewColumn newColumnWindow = new(GetWindow(this));
+            // BLANK ROW WITH FOCUS
+            _manager.AddCredentials(new Credentials(string.Empty, string.Empty, string.Empty));
+            RefreshList(_manager.CredentialsList);
 
-            newColumnWindow.ShowDialog();
+            DataGrid.SelectedItem = DataGrid.Items[DataGrid.Items.Count - 1];
+        }
 
-            if (newColumnWindow.isSaved)
-            {
-                string description = newColumnWindow.Description;
-                string username = newColumnWindow.UserName;
-                string password = newColumnWindow.Password;
+        private void Button_Export(object sender, RoutedEvent e)
+        {
+            // todo..
+        }
 
-                _manager.AddCredentials(new Credentials(description, username, password));
-
-                RefreshList(_manager.CredentialsList);
-            }
+        private void Button_Import(object sender, RoutedEvent e)
+        {
+            // todo..
         }
 
         private void DataGrid_RowEditEnding(object sender, System.Windows.Controls.DataGridRowEditEndingEventArgs e)
