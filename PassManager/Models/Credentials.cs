@@ -11,7 +11,7 @@ namespace PassManager.Models
             _id = Guid.NewGuid();
 
             this.userName = userName;
-            this.storedPassword = password;
+            this.storedPassword = !string.IsNullOrEmpty(password) ? StringCipher.Encrypt(password) : password;
             this.description = description;
         }
 
