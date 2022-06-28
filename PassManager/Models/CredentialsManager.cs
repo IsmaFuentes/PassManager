@@ -35,6 +35,13 @@ namespace PassManager.Models
             SaveJson();
         }
 
+        public void RemoveCredentials(Credentials c)
+        {
+            CredentialsList.Remove(c);
+
+            SaveJson();
+        }
+
         public void UpdateCredentials(Guid id, Credentials newValue)
         {
             Credentials oldValue = CredentialsList.Where(c => c._id.Equals(id)).FirstOrDefault();

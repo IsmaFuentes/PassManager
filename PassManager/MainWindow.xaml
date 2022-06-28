@@ -7,21 +7,22 @@
         mc:Ignorable="d"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="PassManager" Height="600" Width="500" ResizeMode="CanMinimize">
+        Title="PassManager" Height="640" Width="480" ResizeMode="CanMinimize">
 
     <!--main grid-->
     <Grid Height="584" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btn_New" Content="+" Margin="10,10,0,0" VerticalAlignment="Top" Click="Button_Add" Width="auto" Cursor="Hand"/>
-        <Button x:Name="btn_Export" Content="Export" Margin="45,10,0,0" VerticalAlignment="Top" Click="btn_Export_Click" Width="auto" Cursor="Hand"/>
-        <Button x:Name="btn_Import" Content="Import" Margin="110,10,0,0" VerticalAlignment="Top" Click="btn_Import_Click"  Width="auto" Cursor="Hand"/>
+        <Button x:Name="btn_New" Content="Add" Margin="10,10,0,0" VerticalAlignment="Top" Click="Button_Add" Width="auto" Cursor="Hand"/>
+        <Button x:Name="btn_Delete" Content="Remove" Margin="60,10,0,0" VerticalAlignment="Top" Click="btn_Delete_Click" Width="auto" Cursor="Hand"/>
+        <Button x:Name="btn_Export" Content="Export" Margin="345,10,0,0" VerticalAlignment="Top" Click="btn_Export_Click" Width="auto" Cursor="Hand"/>
+        <Button x:Name="btn_Import" Content="Import" Margin="410,10,0,0" VerticalAlignment="Top" Click="btn_Import_Click"  Width="auto" Cursor="Hand"/>
         <DataGrid Margin="10,50,10,10" Name="DataGrid" Visibility="Visible" GridLinesVisibility="None" BorderThickness="0" CanUserResizeColumns="False" CanUserResizeRows="False" Background="White" RowEditEnding="DataGrid_RowEditEnding" AutoGenerateColumns="False" HeadersVisibility="Column">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding _id}" Visibility="Hidden" Width="*"/>
-                <DataGridTextColumn Header="Descripción" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="25*"/>
-                <DataGridTextColumn Header="Usuario" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="45*"/>
+                <DataGridTextColumn Header="Descripción" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="35*"/>
+                <DataGridTextColumn Header="Usuario" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="40*"/>
                 <DataGridTextColumn Header="Contraseña" Binding="{Binding password, UpdateSourceTrigger=PropertyChanged}" Width="30*"/>
             </DataGrid.Columns>
         </DataGrid>

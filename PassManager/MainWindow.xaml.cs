@@ -41,6 +41,25 @@ namespace PassManager
             DataGrid.SelectedItem = DataGrid.Items[DataGrid.Items.Count - 1];
         }
 
+        private void btn_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (this.DataGrid.SelectedIndex != -1)
+                {
+                    var item = (Credentials)this.DataGrid.Items[this.DataGrid.SelectedIndex];
+
+                    _manager.RemoveCredentials(item);
+
+                    RefreshList(_manager.CredentialsList);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         private void DataGrid_RowEditEnding(object sender, System.Windows.Controls.DataGridRowEditEndingEventArgs e)
         {
             var newValue = (Credentials)e.Row.DataContext;
@@ -53,55 +72,69 @@ namespace PassManager
 
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
-            var openFolderDialog = new FolderBrowserDialog()
+            try
             {
-                ShowNewFolderButton = true,
-                SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            };
-
-            if(openFolderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                using (var stream = File.Create(Path.Combine(openFolderDialog.SelectedPath, "credentials.csv")))
+                var openFolderDialog = new FolderBrowserDialog()
                 {
-                    stream.Position = 0;
+                    ShowNewFolderButton = true,
+                    SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                };
 
-                    using(var streamWriter = new StreamWriter(stream))
+                if (openFolderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    using (var stream = File.Create(Path.Combine(openFolderDialog.SelectedPath, "credentials.csv")))
                     {
-                        foreach(var creds in _manager.CredentialsList)
-                        {
-                            var contentBytes = Encoding.Unicode.GetBytes($"{creds.description};{creds.userName};{creds.password}");
+                        stream.Position = 0;
 
-                            streamWriter.WriteLine(Convert.ToBase64String(contentBytes));
+                        using (var streamWriter = new StreamWriter(stream))
+                        {
+                            foreach (var creds in _manager.CredentialsList)
+                            {
+                                var contentBytes = Encoding.Unicode.GetBytes($"{creds.description};{creds.userName};{creds.password}");
+
+                                streamWriter.WriteLine(Convert.ToBase64String(contentBytes));
+                            }
                         }
                     }
                 }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog();
-
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            try
             {
-                using (var stream = File.Open(openFileDialog.FileName, FileMode.Open))
+                var openFileDialog = new OpenFileDialog();
+
+                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    stream.Position = 0;
-
-                    using (var streamReader = new StreamReader(stream))
+                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open))
                     {
-                        while (!streamReader.EndOfStream)
+                        stream.Position = 0;
+
+                        using (var streamReader = new StreamReader(stream))
                         {
-                            string text = Encoding.Unicode.GetString(Convert.FromBase64String(streamReader.ReadLine()));
+                            while (!streamReader.EndOfStream)
+                            {
+                                string text = Encoding.Unicode.GetString(Convert.FromBase64String(streamReader.ReadLine()));
 
-                            var values = text.Split(";");
+                                var values = text.Split(";");
 
-                            _manager.AddCredentials(new Credentials(values[0], values[1], values[2]));
+                                _manager.AddCredentials(new Credentials(values[0], values[1], values[2]));
+                            }
+
+                            RefreshList(_manager.CredentialsList);
                         }
-
-                        RefreshList(_manager.CredentialsList);
                     }
                 }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
