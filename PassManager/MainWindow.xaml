@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
+        Icon="Images\lock.ico"
         Title="PassManager" Height="640" Width="480" ResizeMode="CanMinimize">
 
     <!--main grid-->

@@ -4,8 +4,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Forms;
-
 using PassManager.Models;
+using System.Windows.Input;
 
 namespace PassManager
 {
@@ -22,6 +22,20 @@ namespace PassManager
             
             // DataGrid
             DataGrid.ItemsSource = _manager.CredentialsList;
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (DataGrid.SelectedItems.Count > 0)
+            {
+                // Unselect rows
+                DataGrid.UnselectAll();
+                DataGrid.UnselectAllCells();
+
+                DataGrid.SelectedItem = null;
+            }
         }
 
         private void RefreshList(List<Credentials> newCreds)
@@ -45,11 +59,12 @@ namespace PassManager
         {
             try
             {
-                if (this.DataGrid.SelectedIndex != -1)
+                if(this.DataGrid.SelectedItems.Count > 0)
                 {
-                    var item = (Credentials)this.DataGrid.Items[this.DataGrid.SelectedIndex];
-
-                    _manager.RemoveCredentials(item);
+                    foreach(var item in this.DataGrid.SelectedItems)
+                    {
+                        _manager.RemoveCredentials((Credentials)item);
+                    }
 
                     RefreshList(_manager.CredentialsList);
                 }
