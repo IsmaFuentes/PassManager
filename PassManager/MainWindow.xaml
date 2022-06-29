@@ -22,9 +22,9 @@
         <DataGrid Margin="10,50,10,10" Name="DataGrid" Visibility="Visible" GridLinesVisibility="None" BorderThickness="0" CanUserResizeColumns="False" CanUserResizeRows="False" Background="White" RowEditEnding="DataGrid_RowEditEnding" AutoGenerateColumns="False" HeadersVisibility="Column">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding _id}" Visibility="Hidden" Width="*"/>
-                <DataGridTextColumn Header="Descripción" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="35*"/>
-                <DataGridTextColumn Header="Usuario" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="40*"/>
-                <DataGridTextColumn Header="Contraseña" Binding="{Binding password, UpdateSourceTrigger=PropertyChanged}" Width="30*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="35*"/>
+                <DataGridTextColumn Header="Username" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="40*"/>
+                <DataGridTextColumn Header="Password" Binding="{Binding password, UpdateSourceTrigger=PropertyChanged}" Width="30*"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
