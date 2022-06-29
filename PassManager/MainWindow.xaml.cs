@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Forms;
-using PassManager.Models;
 using System.Windows.Input;
+using System.Collections.Generic;
+using PassManager.Models;
 
 namespace PassManager
 {
@@ -30,10 +30,9 @@ namespace PassManager
 
             if (DataGrid.SelectedItems.Count > 0)
             {
-                // Unselect rows
+                // Unselect everything when clicking outside the grid
                 DataGrid.UnselectAll();
                 DataGrid.UnselectAllCells();
-
                 DataGrid.SelectedItem = null;
             }
         }
@@ -50,6 +49,7 @@ namespace PassManager
         {
             // BLANK ROW WITH FOCUS
             _manager.AddCredentials(new Credentials(string.Empty, string.Empty, string.Empty));
+
             RefreshList(_manager.CredentialsList);
 
             DataGrid.SelectedItem = DataGrid.Items[DataGrid.Items.Count - 1];
