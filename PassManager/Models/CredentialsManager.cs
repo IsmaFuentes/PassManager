@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using PassManager.Helpers;
 
@@ -54,6 +56,70 @@ namespace PassManager.Models
                 }
 
                 SaveJson();
+            }
+        }
+
+        public void ExportCredentials()
+        {
+            try
+            {
+                var openFolderDialog = new FolderBrowserDialog()
+                {
+                    ShowNewFolderButton = true,
+                    SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                };
+
+                if (openFolderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    using (var stream = File.Create(Path.Combine(openFolderDialog.SelectedPath, "credentials.csv")))
+                    {
+                        stream.Position = 0;
+
+                        using (var streamWriter = new StreamWriter(stream))
+                        {
+                            foreach (var creds in CredentialsList)
+                            {
+                                streamWriter.WriteLine($"{creds.description};{creds.userName};{creds.password}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void ImportCredentials()
+        {
+            try
+            {
+                var openFileDialog = new OpenFileDialog();
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open))
+                    {
+                        stream.Position = 0;
+
+                        using (var streamReader = new StreamReader(stream))
+                        {
+                            while (!streamReader.EndOfStream)
+                            {
+                                string text = streamReader.ReadLine();
+
+                                var values = text.Split(";");
+
+                                this.AddCredentials(new Credentials(values[0], values[1], values[2]));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }

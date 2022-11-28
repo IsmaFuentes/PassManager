@@ -7,24 +7,47 @@
         mc:Ignorable="d"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Icon="Images\lock.ico"
-        Title="PassManager" Height="640" Width="480" ResizeMode="CanMinimize">
+        
+        Title="PassManager" Height="640" Width="480" ResizeMode="CanMinimize" Icon="/Resources/lock.png" UseLayoutRounding="True">
 
     <!--main grid-->
     <Grid Height="584" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btn_New" Content="Add" Margin="10,10,0,0" VerticalAlignment="Top" Click="Button_Add" Width="auto" Cursor="Hand"/>
-        <Button x:Name="btn_Delete" Content="Remove" Margin="60,10,0,0" VerticalAlignment="Top" Click="btn_Delete_Click" Width="auto" Cursor="Hand"/>
-        <Button x:Name="btn_Export" Content="Export" Margin="345,10,0,0" VerticalAlignment="Top" Click="btn_Export_Click" Width="auto" Cursor="Hand"/>
-        <Button x:Name="btn_Import" Content="Import" Margin="410,10,0,0" VerticalAlignment="Top" Click="btn_Import_Click"  Width="auto" Cursor="Hand"/>
+        <!-- ICONS: https://www.flaticon.com/packs/essential-elements-5-->
+        <Menu Margin="10,5,10,539" Height="30" VerticalAlignment="Center">
+            <MenuItem Name="MenuCreate" Click="Button_Create" Cursor="Hand" Width="30" Height="30" Margin="10,0,10,0">
+                <MenuItem.Background>
+                    <ImageBrush ImageSource="/Resources/add.png" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </MenuItem.Background>
+            </MenuItem>
+            <MenuItem Name="MenuDelete" Click="Button_Delete" Cursor="Hand" Width="30" Height="30" Margin="0,0,10,0">
+                <MenuItem.Background>
+                    <ImageBrush ImageSource="/Resources/delete.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </MenuItem.Background>
+            </MenuItem>
+            <MenuItem Name="MenuAction" Cursor="Hand" Width="30" Height="30" Margin="0,0,10,0">
+                <MenuItem.Background>
+                    <ImageBrush ImageSource="/Resources/more.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </MenuItem.Background>
+                <MenuItem Header="Import" Click="Button_Import" Cursor="Hand"></MenuItem>
+                <MenuItem Header="Export" Click="Button_Export" Cursor="Hand"></MenuItem>
+            </MenuItem>
+        </Menu>
         <DataGrid Margin="10,50,10,10" Name="DataGrid" Visibility="Visible" GridLinesVisibility="None" BorderThickness="0" CanUserResizeColumns="False" CanUserResizeRows="False" Background="White" RowEditEnding="DataGrid_RowEditEnding" AutoGenerateColumns="False" HeadersVisibility="Column">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding _id}" Visibility="Hidden" Width="*"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="35*"/>
                 <DataGridTextColumn Header="Username" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="40*"/>
                 <DataGridTextColumn Header="Password" Binding="{Binding password, UpdateSourceTrigger=PropertyChanged}" Width="30*"/>
+                <!--<DataGridTemplateColumn Header="Password" Width="30*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <PasswordBox x:Name="PasswordBox"></PasswordBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
