@@ -8,19 +8,24 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Password manager" Height="640" Width="500" UseLayoutRounding="True">
-    <Grid Height="585" VerticalAlignment="Top">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Menu Margin="10,5,10,540" Height="30" VerticalAlignment="Center">
-            <MenuItem Name="MenuCreate" Click="Button_Create" Cursor="Hand" Height="30" Margin="0,0,0,0" Header="New"/>
-            <MenuItem Name="MenuDelete" Click="Button_Delete" Cursor="Hand" Height="30" Margin="0,0,0,0" Header="Remove"/>
-            <MenuItem Name="MenuAction" Cursor="Hand" Height="30" Margin="0,0,0,0" Header="Options">
-                <MenuItem Header="Import" Click="Button_Import" Cursor="Hand"></MenuItem>
-                <MenuItem Header="Export" Click="Button_Export" Cursor="Hand"></MenuItem>
-            </MenuItem>
-        </Menu>
-        <DataGrid Margin="10,50,10,10" Name="DataGrid" Visibility="Visible" BorderThickness="0"
+    <UserControl>
+        <Grid VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" Margin="10,5,10,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Menu Grid.Column="0" Grid.Row="0" Height="30" Margin="0,5,0,5">
+                <MenuItem Name="MenuCreate" Click="Button_Create" Cursor="Hand" Height="30" Margin="0,0,0,0" Header="New"/>
+                <MenuItem Name="MenuDelete" Click="Button_Delete" Cursor="Hand" Height="30" Margin="0,0,0,0" Header="Remove"/>
+                <MenuItem Name="MenuAction" Cursor="Hand" Height="30" Margin="0,0,0,0" Header="Options">
+                    <MenuItem Header="Import" Click="Button_Import" Cursor="Hand"></MenuItem>
+                    <MenuItem Header="Export" Click="Button_Export" Cursor="Hand"></MenuItem>
+                </MenuItem>
+            </Menu>
+            <DataGrid Grid.Column="0" Grid.Row="1" Name="DataGrid" Visibility="Visible" BorderThickness="0"
                   CanUserResizeColumns="False" 
                   CanUserResizeRows="False" 
                   Background="White" 
@@ -28,12 +33,13 @@
                   AutoGenerateColumns="False" 
                   GridLinesVisibility="Horizontal" 
                   HeadersVisibility="None">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding _id}" Visibility="Hidden" Width="*"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="35*"/>
-                <DataGridTextColumn Header="Username" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="40*"/>
-                <DataGridTextColumn Header="Password" Binding="{Binding password, UpdateSourceTrigger=PropertyChanged}" Width="30*"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding _id}" Visibility="Hidden" Width="*"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding description, UpdateSourceTrigger=PropertyChanged}" Width="35*"/>
+                    <DataGridTextColumn Header="Username" Binding="{Binding userName, UpdateSourceTrigger=PropertyChanged}" Width="40*"/>
+                    <DataGridTextColumn Header="Password" Binding="{Binding password, UpdateSourceTrigger=PropertyChanged}" Width="30*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </UserControl>
 </Window>
