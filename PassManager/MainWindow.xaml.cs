@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Collections.Generic;
 using PassManager.Models;
@@ -54,12 +56,11 @@ namespace PassManager
 
         private void Button_Create(object sender, RoutedEventArgs e)
         {
-            // todo: Reimplementar
             _manager.AddCredentials(new Credentials(string.Empty, string.Empty, string.Empty));
 
             RefreshList(_manager.CredentialsList);
 
-            DataGrid.SelectedItem = DataGrid.Items[DataGrid.Items.Count - 1];
+            DataGrid.SelectedItem = DataGrid.Items[^1];
         }
 
         private void Button_Delete(object sender, RoutedEventArgs e)
@@ -78,20 +79,51 @@ namespace PassManager
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                System.Windows.MessageBox.Show(ex.Message);    
             }
         }
 
         private void Button_Export(object sender, RoutedEventArgs e)
         {
-            _manager.ExportCredentials();
+            try
+            {
+                var openFolderDialog = new FolderBrowserDialog()
+                {
+                    ShowNewFolderButton = true,
+                    SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                };
+
+                if (openFolderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    _manager.ExportCredentials(openFolderDialog.SelectedPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
 
         private void Button_Import(object sender, RoutedEventArgs e)
         {
-            _manager.ImportCredentials();
+            try
+            {
+                var openFileDialog = new OpenFileDialog();
 
-            RefreshList(_manager.CredentialsList);
+                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open))
+                    {
+                        _manager.ImportCredentials(openFileDialog.FileName);
+                    }
+
+                    RefreshList(_manager.CredentialsList);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
     }
 }

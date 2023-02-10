@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
-using System.Windows.Forms;
+using System.Linq;
 using System.Collections.Generic;
 using PassManager.Helpers;
 
@@ -59,67 +58,39 @@ namespace PassManager.Models
             }
         }
 
-        public void ExportCredentials()
+        public void ExportCredentials(string path)
         {
-            try
+            using (var stream = File.Create(Path.Combine(path, "credentials.csv")))
             {
-                var openFolderDialog = new FolderBrowserDialog()
-                {
-                    ShowNewFolderButton = true,
-                    SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                };
+                stream.Position = 0;
 
-                if (openFolderDialog.ShowDialog() == DialogResult.OK)
+                using (var streamWriter = new StreamWriter(stream))
                 {
-                    using (var stream = File.Create(Path.Combine(openFolderDialog.SelectedPath, "credentials.csv")))
+                    foreach (var creds in CredentialsList)
                     {
-                        stream.Position = 0;
-
-                        using (var streamWriter = new StreamWriter(stream))
-                        {
-                            foreach (var creds in CredentialsList)
-                            {
-                                streamWriter.WriteLine($"{creds.description};{creds.userName};{creds.password}");
-                            }
-                        }
+                        streamWriter.WriteLine($"{creds.description};{creds.userName};{creds.password}");
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
 
-        public void ImportCredentials()
+        public void ImportCredentials(string path)
         {
-            try
+            using (var stream = File.Open(path, FileMode.Open))
             {
-                var openFileDialog = new OpenFileDialog();
+                stream.Position = 0;
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                using (var streamReader = new StreamReader(stream))
                 {
-                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open))
+                    while (!streamReader.EndOfStream)
                     {
-                        stream.Position = 0;
+                        string text = streamReader.ReadLine();
 
-                        using (var streamReader = new StreamReader(stream))
-                        {
-                            while (!streamReader.EndOfStream)
-                            {
-                                string text = streamReader.ReadLine();
+                        var values = text.Split(";");
 
-                                var values = text.Split(";");
-
-                                this.AddCredentials(new Credentials(values[0], values[1], values[2]));
-                            }
-                        }
+                        this.AddCredentials(new Credentials(values[0], values[1], values[2]));
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
     }

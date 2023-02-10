@@ -10,27 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\add.png" />
-    <None Remove="Resources\delete.png" />
+    <None Remove="lock.png" />
     <None Remove="Resources\lock.ico" />
     <None Remove="Resources\lock.png" />
-    <None Remove="Resources\more.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\add.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\delete.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\lock.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\lock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\more.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -38,6 +27,10 @@
   <ItemGroup>
     <PackageReference Include="ModernWpfUI" Version="0.9.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="lock.png" />
   </ItemGroup>
 
   <ItemGroup>
