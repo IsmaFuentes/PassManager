@@ -8,20 +8,6 @@ namespace PassManager.Cryptography
     // https://learn.microsoft.com/en-us/dotnet/standard/security/how-to-use-data-protection
     public static class StringCipher
     {
-        public static string EncryptString(string text)
-        {
-            var encryptedBytes = ProtectedData.Protect(Encoding.Unicode.GetBytes(text), null, DataProtectionScope.CurrentUser);
-
-            return Convert.ToBase64String(encryptedBytes);
-        }
-
-        public static string DecryptString(string text)
-        {
-            var decryptedBytes = ProtectedData.Unprotect(Convert.FromBase64String(text), null, DataProtectionScope.CurrentUser);
-
-            return Encoding.Unicode.GetString(decryptedBytes);
-        }
-
         public static void Encrypt(string content, string outputFile)
         {
             if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
@@ -57,6 +43,20 @@ namespace PassManager.Cryptography
             byte[] outputBytes = ProtectedData.Unprotect(File.ReadAllBytes(inputFile), null, DataProtectionScope.CurrentUser);
 
             return Encoding.UTF8.GetString(outputBytes);
+        }
+
+        public static string EncryptString(string text)
+        {
+            var encryptedBytes = ProtectedData.Protect(Encoding.Unicode.GetBytes(text), null, DataProtectionScope.CurrentUser);
+
+            return Convert.ToBase64String(encryptedBytes);
+        }
+
+        public static string DecryptString(string text)
+        {
+            var decryptedBytes = ProtectedData.Unprotect(Convert.FromBase64String(text), null, DataProtectionScope.CurrentUser);
+
+            return Encoding.Unicode.GetString(decryptedBytes);
         }
     }
 }

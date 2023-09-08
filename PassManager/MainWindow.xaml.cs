@@ -23,6 +23,8 @@ namespace PassManager
             DataGrid.ItemsSource = _manager.CredentialsList;
         }
 
+        private bool isEditing { get; set; }
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -36,6 +38,7 @@ namespace PassManager
             }
         }
 
+
         private void DataGrid_RowEditEnding(object sender, System.Windows.Controls.DataGridRowEditEndingEventArgs e)
         {
             var newValue = (Credentials)e.Row.DataContext;
@@ -44,18 +47,38 @@ namespace PassManager
             {
                 _manager.UpdateCredentials(newValue._id, newValue);
             }
+
+            isEditing = false;
         }
+
+        private void DataGrid_BeginningEdit(object sender, System.Windows.Controls.DataGridBeginningEditEventArgs e)
+        {
+            isEditing = true;
+        }
+
 
         private void RefreshList(List<Credentials> newCreds)
         {
-            DataGrid.ItemsSource = newCreds;
-            DataGrid.Items.Refresh();
+            try
+            {
+                DataGrid.ItemsSource = newCreds;
+                DataGrid.Items.Refresh();
 
-            this.InvalidateVisual();
+                this.InvalidateVisual();
+            }
+            catch(Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Button_Create(object sender, RoutedEventArgs e)
         {
+            if (isEditing)
+            {
+                return;
+            }
+
             _manager.AddCredentials(new Credentials(string.Empty, string.Empty, string.Empty));
 
             RefreshList(_manager.CredentialsList);

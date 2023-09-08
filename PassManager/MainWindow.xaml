@@ -30,6 +30,7 @@
                   CanUserResizeRows="False" 
                   Background="White" 
                   RowEditEnding="DataGrid_RowEditEnding" 
+                  BeginningEdit="DataGrid_BeginningEdit"
                   AutoGenerateColumns="False" 
                   GridLinesVisibility="Horizontal" 
                   HeadersVisibility="None">

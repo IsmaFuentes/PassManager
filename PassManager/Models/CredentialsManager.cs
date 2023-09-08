@@ -30,7 +30,7 @@ namespace PassManager.Models
             }
         }
 
-        private void SaveJson()
+        private void SaveData()
         {
             string content = Json.Stringify(CredentialsList);
 
@@ -41,14 +41,14 @@ namespace PassManager.Models
         {
             CredentialsList.Add(c);
 
-            SaveJson();
+            SaveData();
         }
 
         public void RemoveCredentials(Credentials c)
         {
             CredentialsList.Remove(c);
 
-            SaveJson();
+            SaveData();
         }
 
         public void UpdateCredentials(Guid id, Credentials newValue)
@@ -62,7 +62,7 @@ namespace PassManager.Models
                     CredentialsList[CredentialsList.IndexOf(oldValue)] = newValue;
                 }
 
-                SaveJson();
+                SaveData();
             }
         }
 
