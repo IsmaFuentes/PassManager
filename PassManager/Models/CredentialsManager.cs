@@ -3,18 +3,21 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using PassManager.Helpers;
+using PassManager.Cryptography;
 
 namespace PassManager.Models
 {
     public class CredentialsManager
     {
+        private readonly string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PassManager");
+
         public List<Credentials> CredentialsList = new List<Credentials>();
 
         public CredentialsManager()
         {
             try
             {
-                var store = Json.ReadSync<List<Credentials>>("store");
+                var store = Json.Parse<List<Credentials>>(StringCipher.Decrypt(Path.Combine(FolderPath, "data.dat")));
 
                 if (store != null)
                 {
@@ -27,7 +30,12 @@ namespace PassManager.Models
             }
         }
 
-        private void SaveJson() => Json.ModifyJsonSync("store", CredentialsList);
+        private void SaveJson()
+        {
+            string content = Json.Stringify(CredentialsList);
+
+            StringCipher.Encrypt(content, Path.Combine(FolderPath, "data.dat"));
+        }
 
         public void AddCredentials(Credentials c)
         {
