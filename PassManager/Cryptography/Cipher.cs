@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 namespace PassManager.Cryptography
 {
     // https://learn.microsoft.com/en-us/dotnet/standard/security/how-to-use-data-protection
-    public static class StringCipher
+    public static class Cipher
     {
         public static void Encrypt(string content, string outputFile)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using PassManager.Helpers;
 using PassManager.Cryptography;
+using System.Windows;
 
 namespace PassManager.Models
 {
@@ -17,7 +18,9 @@ namespace PassManager.Models
         {
             try
             {
-                var store = Json.Parse<List<Credentials>>(StringCipher.Decrypt(Path.Combine(FolderPath, "data.dat")));
+                string decryptedString = Cipher.Decrypt(Path.Combine(FolderPath, "data.dat"));
+
+                var store = Json.Parse<List<Credentials>>(decryptedString);
 
                 if (store != null)
                 {
@@ -26,7 +29,7 @@ namespace PassManager.Models
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -34,7 +37,7 @@ namespace PassManager.Models
         {
             string content = Json.Stringify(CredentialsList);
 
-            StringCipher.Encrypt(content, Path.Combine(FolderPath, "data.dat"));
+            Cipher.Encrypt(content, Path.Combine(FolderPath, "data.dat"));
         }
 
         public void AddCredentials(Credentials c)
