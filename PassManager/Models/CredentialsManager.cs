@@ -20,7 +20,7 @@ namespace PassManager.Models
             {
                 string decryptedString = Cipher.Decrypt(Path.Combine(FolderPath, "data.dat"));
 
-                var store = Json.Parse<List<Credentials>>(decryptedString);
+                List<Credentials> store = Json.Parse<List<Credentials>>(decryptedString);
 
                 if (store != null)
                 {

@@ -56,7 +56,6 @@ namespace PassManager
             isEditing = true;
         }
 
-
         private void RefreshList(List<Credentials> newCreds)
         {
             try
@@ -79,10 +78,11 @@ namespace PassManager
                 return;
             }
 
-            _manager.AddCredentials(new Credentials(string.Empty, string.Empty, string.Empty));
+            _manager.AddCredentials(new Credentials("description", "username", "password"));
 
             RefreshList(_manager.CredentialsList);
 
+            // Last inserted item selection
             DataGrid.SelectedItem = DataGrid.Items[^1];
         }
 
@@ -110,15 +110,16 @@ namespace PassManager
         {
             try
             {
-                var openFolderDialog = new FolderBrowserDialog()
+                using (var openFolderDialog = new FolderBrowserDialog()
                 {
                     ShowNewFolderButton = true,
                     SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                };
-
-                if (openFolderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                })
                 {
-                    _manager.ExportCredentials(openFolderDialog.SelectedPath);
+                    if (openFolderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        _manager.ExportCredentials(openFolderDialog.SelectedPath);
+                    }
                 }
             }
             catch (Exception ex)
@@ -131,16 +132,17 @@ namespace PassManager
         {
             try
             {
-                var openFileDialog = new OpenFileDialog();
-
-                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                using (var openFileDialog = new OpenFileDialog())
                 {
-                    using (var stream = File.Open(openFileDialog.FileName, FileMode.Open))
+                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        _manager.ImportCredentials(openFileDialog.FileName);
-                    }
+                        using (var stream = File.Open(openFileDialog.FileName, FileMode.Open))
+                        {
+                            _manager.ImportCredentials(openFileDialog.FileName);
+                        }
 
-                    RefreshList(_manager.CredentialsList);
+                        RefreshList(_manager.CredentialsList);
+                    }
                 }
             }
             catch (Exception ex)
