@@ -18,6 +18,8 @@ namespace PassManager.Models
         {
             try
             {
+                Directory.CreateDirectory(FolderPath);
+
                 string decryptedString = Cipher.Decrypt(Path.Combine(FolderPath, "data.dat"));
 
                 List<Credentials> store = Json.Parse<List<Credentials>>(decryptedString);
