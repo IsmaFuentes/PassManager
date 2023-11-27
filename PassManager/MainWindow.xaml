@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="Password manager" Height="640" Width="500" UseLayoutRounding="True">
+        Title="Password manager" Height="640" Width="500" UseLayoutRounding="True" WindowStartupLocation="CenterScreen">
     <UserControl>
         <Grid VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" Margin="10,5,10,5">
             <Grid.ColumnDefinitions>

@@ -31,6 +31,11 @@ namespace PassManager
 
             if (DataGrid.SelectedItems.Count > 0)
             {
+                if(isEditing)
+                {
+                  DataGrid.CommitEdit(System.Windows.Controls.DataGridEditingUnit.Row, true);
+                }
+
                 // Unselect everything when clicking outside the grid
                 DataGrid.UnselectAll();
                 DataGrid.UnselectAllCells();
