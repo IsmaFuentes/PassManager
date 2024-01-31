@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using PassManager.Helpers;
-using PassManager.Cryptography;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace PassManager.Models
 {
@@ -12,17 +10,15 @@ namespace PassManager.Models
     {
         private readonly string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PassManager");
 
-        public List<Credentials> CredentialsList = new List<Credentials>();
-
         public CredentialsManager()
         {
             try
             {
                 Directory.CreateDirectory(FolderPath);
 
-                string decryptedString = Cipher.Decrypt(Path.Combine(FolderPath, "data.dat"));
+                string decryptedString = Cryptography.Cipher.Decrypt(Path.Combine(FolderPath, "data.dat"));
 
-                List<Credentials> store = Json.Parse<List<Credentials>>(decryptedString);
+                List<Credentials> store = Helpers.Json.Parse<List<Credentials>>(decryptedString);
 
                 if (store != null)
                 {
@@ -35,24 +31,24 @@ namespace PassManager.Models
             }
         }
 
+        public List<Credentials> CredentialsList { get; private set; } = new List<Credentials>();
+
         private void SaveData()
         {
-            string content = Json.Stringify(CredentialsList);
+            string content = Helpers.Json.Stringify(CredentialsList);
 
-            Cipher.Encrypt(content, Path.Combine(FolderPath, "data.dat"));
+            Cryptography.Cipher.Encrypt(content, Path.Combine(FolderPath, "data.dat"));
         }
 
         public void AddCredentials(Credentials c)
         {
             CredentialsList.Add(c);
-
             SaveData();
         }
 
         public void RemoveCredentials(Credentials c)
         {
             CredentialsList.Remove(c);
-
             SaveData();
         }
 
@@ -101,7 +97,7 @@ namespace PassManager.Models
 
                         var values = text.Split(";");
 
-                        this.AddCredentials(new Credentials(values[0], values[1], values[2]));
+                        AddCredentials(new Credentials(values[0], values[1], values[2]));
                     }
                 }
             }

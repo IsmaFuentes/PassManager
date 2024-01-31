@@ -92,7 +92,7 @@ namespace PassManager
             {
                 if(DataGrid.SelectedItems.Count > 0)
                 {
-                    if(MessageBox.Show($"Do you want to delete the selected records?", "Delete confirmation", MessageBoxButton.YesNo , MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if(MessageBox.Show(this, $"Do you want to delete the selected records?", "Delete confirmation", MessageBoxButton.YesNo , MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         foreach(var item in DataGrid.SelectedItems)
                         {
@@ -127,7 +127,7 @@ namespace PassManager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(this, ex.Message);
             }
         }
 
@@ -150,7 +150,7 @@ namespace PassManager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(this, ex.Message);
             }
         }
     }
