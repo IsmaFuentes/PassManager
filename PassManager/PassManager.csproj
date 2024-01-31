@@ -1,20 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <!--<TargetFramework>net5.0-windows10.0.18362.0</TargetFramework>-->
-      <TargetFramework>net6.0-windows10.0.18362.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\lock.ico</ApplicationIcon>
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="lock.png" />
     <None Remove="Resources\lock.ico" />
     <None Remove="Resources\lock.png" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Resources\lock.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -23,16 +20,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="ModernWpfUI" Version="0.9.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
-
   <ItemGroup>
     <Resource Include="lock.png" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -45,14 +39,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

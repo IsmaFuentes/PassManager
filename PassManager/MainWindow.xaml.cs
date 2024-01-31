@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Collections.Generic;
-using PassManager.Models;
 
 namespace PassManager
 {
@@ -13,7 +11,7 @@ namespace PassManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CredentialsManager _manager = new CredentialsManager();
+        private Models.CredentialsManager _manager = new Models.CredentialsManager();
 
         public MainWindow()
         {
@@ -46,7 +44,7 @@ namespace PassManager
 
         private void DataGrid_RowEditEnding(object sender, System.Windows.Controls.DataGridRowEditEndingEventArgs e)
         {
-            var newValue = (Credentials)e.Row.DataContext;
+            var newValue = (Models.Credentials)e.Row.DataContext;
 
             if (newValue != null)
             {
@@ -61,18 +59,17 @@ namespace PassManager
             isEditing = true;
         }
 
-        private void RefreshList(List<Credentials> newCreds)
+        private void RefreshList(List<Models.Credentials> newCreds)
         {
             try
             {
                 DataGrid.ItemsSource = newCreds;
                 DataGrid.Items.Refresh();
-
                 this.InvalidateVisual();
             }
             catch(Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -83,10 +80,8 @@ namespace PassManager
                 return;
             }
 
-            _manager.AddCredentials(new Credentials("description", "username", "password"));
-
+            _manager.AddCredentials(new Models.Credentials("description", "username", "password"));
             RefreshList(_manager.CredentialsList);
-
             // Last inserted item selection
             DataGrid.SelectedItem = DataGrid.Items[^1];
         }
@@ -95,19 +90,22 @@ namespace PassManager
         {
             try
             {
-                if(this.DataGrid.SelectedItems.Count > 0)
+                if(DataGrid.SelectedItems.Count > 0)
                 {
-                    foreach(var item in DataGrid.SelectedItems)
+                    if(MessageBox.Show($"Do you want to delete the selected records?", "Delete confirmation", MessageBoxButton.YesNo , MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        _manager.RemoveCredentials((Credentials)item);
-                    }
+                        foreach(var item in DataGrid.SelectedItems)
+                        {
+                            _manager.RemoveCredentials((Models.Credentials)item);
+                        }
 
-                    RefreshList(_manager.CredentialsList);
+                        RefreshList(_manager.CredentialsList);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);    
+                MessageBox.Show(ex.Message);    
             }
         }
 
@@ -115,7 +113,7 @@ namespace PassManager
         {
             try
             {
-                using (var openFolderDialog = new FolderBrowserDialog()
+                using (var openFolderDialog = new System.Windows.Forms.FolderBrowserDialog()
                 {
                     ShowNewFolderButton = true,
                     SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -129,7 +127,7 @@ namespace PassManager
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -137,7 +135,7 @@ namespace PassManager
         {
             try
             {
-                using (var openFileDialog = new OpenFileDialog())
+                using (var openFileDialog = new System.Windows.Forms.OpenFileDialog())
                 {
                     if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
@@ -152,7 +150,7 @@ namespace PassManager
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
     }
