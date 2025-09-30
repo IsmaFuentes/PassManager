@@ -10,62 +10,64 @@
     </MudButton>
   </div>
 </MudAppBar>
-<div Style="padding:10px">
+
+<div Style="padding:10px;height:100%">
   <MudTextField @bind-Value="@SearchString"
                 Placeholder="Search"
                 Adornment="Adornment.Start"
                 Immediate="true"
                 AdornmentIcon="@Icons.Material.Filled.Search"
-                IconSize="Size.Medium" Class="mt-0">
+                IconSize="Size.Medium" 
+                Class="mt-0 mb-2">
   </MudTextField>
+  <MudPaper Style="height:calc(100% - 40px);overflow:auto;display:flex">
+    <MudDataGrid Items="ViewModel?.DataSource"
+                 T="Models.PasswordCredential"
+                 ReadOnly="false"
+                 Height="100%" Style="width:100%"
+                 FixedHeader
+                 Bordered="false"
+                 Breakpoint="Breakpoint.Xs"
+                 EditMode="DataGridEditMode.Cell"
+                 EditTrigger="DataGridEditTrigger.OnRowClick"
+                 QuickFilter="@QuickFilter">
+      <Columns>
+        <PropertyColumn Property="x => x.Title" Title="Title">
+          <EditTemplate>
+            <MudTextField Placeholder="Title"
+                          @bind-Value=context.Item.Title
+                          @bind-Value:after="() => OnValueChanged(context.Item)" />
+          </EditTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.UserName" Title="Username">
+          <EditTemplate>
+            <MudTextField Placeholder="Username"
+                          @bind-Value=context.Item.UserName
+                          @bind-Value:after="() => OnValueChanged(context.Item)" />
+          </EditTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.Password" Title="Password">
+          <EditTemplate>
+            <MudTextField Placeholder="Password"
+                          @bind-Value=context.Item.Password
+                          @bind-Value:after="() => OnValueChanged(context.Item)"
+                          InputType="context.Item.IsPasswordVisible? InputType.Text: InputType.Password"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Visibility"
+                          OnAdornmentClick="() => SetPasswordVisibility(context.Item)" />
+          </EditTemplate>
+        </PropertyColumn>
+        <TemplateColumn StickyRight=true>
+          <EditTemplate>
+            <MudIconButton Icon="@Icons.Material.Outlined.Delete"
+                           Size="@Size.Small"
+                           OnClick="() => OnRemove(context.Item)" />
+          </EditTemplate>
+        </TemplateColumn>
+      </Columns>
+    </MudDataGrid>
+  </MudPaper>
 </div>
-<MudPaper Style="height:100%;overflow:auto;display:flex">
-  <MudDataGrid Items="ViewModel?.DataSource"
-               T="Models.PasswordCredential"
-               ReadOnly="false"
-               Height="100%" Style="width:100%" 
-               FixedHeader 
-               Bordered="false" 
-               Breakpoint="Breakpoint.Xs" 
-               EditMode="DataGridEditMode.Cell"
-               EditTrigger="DataGridEditTrigger.OnRowClick"
-               QuickFilter="@QuickFilter">
-    <Columns>
-      <PropertyColumn Property="x => x.Title" Title="Title">
-        <EditTemplate>
-          <MudTextField Placeholder="Title" 
-                        @bind-Value=context.Item.Title
-                        @bind-Value:after="() => OnValueChanged(context.Item)" />
-        </EditTemplate>
-      </PropertyColumn>
-      <PropertyColumn Property="x => x.UserName" Title="Username">
-        <EditTemplate>
-          <MudTextField Placeholder="Username" 
-                        @bind-Value=context.Item.UserName 
-                        @bind-Value:after="() => OnValueChanged(context.Item)" />
-        </EditTemplate>
-      </PropertyColumn>
-      <PropertyColumn Property="x => x.Password"Title="Password">
-        <EditTemplate>
-          <MudTextField Placeholder="Password"
-                        @bind-Value=context.Item.Password
-                        @bind-Value:after="() => OnValueChanged(context.Item)"
-                        InputType="context.Item.IsPasswordVisible ? InputType.Text : InputType.Password" 
-                        Adornment="Adornment.End" 
-                        AdornmentIcon="@Icons.Material.Filled.Visibility" 
-                        OnAdornmentClick="() => SetPasswordVisibility(context.Item)"/>
-        </EditTemplate>
-      </PropertyColumn>
-      <TemplateColumn StickyRight=true>
-        <EditTemplate>
-          <MudIconButton Icon="@Icons.Material.Outlined.Delete" 
-                         Size="@Size.Small" 
-                         OnClick="() => OnRemove(context.Item)"/>
-        </EditTemplate>
-      </TemplateColumn>
-    </Columns>
-  </MudDataGrid>
-</MudPaper>
 
 @code{
 
