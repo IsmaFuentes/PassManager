@@ -7,6 +7,7 @@ namespace PassManager.MAUI.ViewModels
   public interface ICredentialsViewModel
   {
     public ObservableCollection<PasswordCredential> DataSource { get; }
+    public void Load();
     public Task Save();
     public void Insert();
     public void Remove(PasswordCredential item);
@@ -19,13 +20,13 @@ namespace PassManager.MAUI.ViewModels
     public CredentialsViewModel(IJsonParser parser)
     {
       _parser = parser;
-      OnLoad();
     }
 
-    private void OnLoad()
+    public void Load()
     {
+      // System.IO.File.Delete(Path.Combine(FolderPath, "data.dat"));
       Directory.CreateDirectory(FolderPath);
-      var credentials = _parser.Parse<List<PasswordCredential>>(Helpers.Cipher.Decrypt(Path.Combine(FolderPath, "data.dat"))) ?? [];
+      var credentials = _parser.Parse<List<PasswordCredential>>(Helpers.StringCipher.Decrypt(Path.Combine(FolderPath, "data.dat"))) ?? [];
       foreach(var item in credentials)
         DataSource.Add(item);
     }
@@ -36,6 +37,8 @@ namespace PassManager.MAUI.ViewModels
       {
 #if WINDOWS
         return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PassManager");
+#elif ANDROID
+        return Path.Combine(FileSystem.AppDataDirectory, "PassManger");
 #endif
         return string.Empty;
       }
@@ -45,7 +48,7 @@ namespace PassManager.MAUI.ViewModels
 
     public async Task Save()
     {
-      await Task.Run(() => Helpers.Cipher.Encrypt(_parser.Stringify(DataSource), Path.Combine(FolderPath, "data.dat")));
+      await Task.Run(() => Helpers.StringCipher.Encrypt(_parser.Stringify(DataSource), Path.Combine(FolderPath, "data.dat")));
     }
 
     public void Insert()

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-
-#if WINDOWS
 using System.Security.Cryptography;
-#endif
 
 namespace PassManager.MAUI.Helpers
 {
-  public static class Cipher
+  public static class StringCipher
   {
     public static void Encrypt(string content, string outputFile)
     {
@@ -24,11 +21,12 @@ namespace PassManager.MAUI.Helpers
 
       using(var stream = new FileStream(outputFile, FileMode.OpenOrCreate))
       {
-        byte[] encryptedBytes = [];
 #if WINDOWS
-        encryptedBytes = ProtectedData.Protect(Encoding.UTF8.GetBytes(content), null, DataProtectionScope.CurrentUser);
-#endif
+        var encryptedBytes = ProtectedData.Protect(Encoding.UTF8.GetBytes(content), null, DataProtectionScope.CurrentUser);
         stream.Write(encryptedBytes, 0, encryptedBytes.Length);
+#elif ANDROID
+
+#endif
       }
     }
 
@@ -44,35 +42,13 @@ namespace PassManager.MAUI.Helpers
         return string.Empty;
       }
 
-      byte[] outputBytes = [];
-
 #if WINDOWS
-      outputBytes = ProtectedData.Unprotect(File.ReadAllBytes(inputFile), null, DataProtectionScope.CurrentUser);
-#endif
-
+      var outputBytes = ProtectedData.Unprotect(File.ReadAllBytes(inputFile), null, DataProtectionScope.CurrentUser);
       return Encoding.UTF8.GetString(outputBytes);
-    }
-
-    public static string EncryptString(string text)
-    {
-      byte[] encryptedBytes = [];
-
-#if WINDOWS
-      encryptedBytes = ProtectedData.Protect(Encoding.Unicode.GetBytes(text), null, DataProtectionScope.CurrentUser);
+#elif ANDROID
+      
 #endif
-
-      return Convert.ToBase64String(encryptedBytes);
-    }
-
-    public static string DecryptString(string text)
-    {
-      byte[] decryptedBytes = [];
-
-#if WINDOWS
-      decryptedBytes = ProtectedData.Unprotect(Convert.FromBase64String(text), null, DataProtectionScope.CurrentUser);
-#endif
-
-      return Encoding.Unicode.GetString(decryptedBytes);
+      return string.Empty;
     }
   }
 }

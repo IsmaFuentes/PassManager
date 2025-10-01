@@ -18,7 +18,7 @@
                 Immediate="true"
                 AdornmentIcon="@Icons.Material.Filled.Search"
                 IconSize="Size.Medium" 
-                Class="mt-0 mb-2">
+                Class="mt-0 mb-3">
   </MudTextField>
   <MudPaper Style="height:calc(100% - 40px);overflow:auto;display:flex">
     <MudDataGrid Items="ViewModel?.DataSource"
@@ -84,9 +84,18 @@
   private ICredentialsViewModel ViewModel { get; set; }
   private string? SearchString { get; set; }
 
-  protected override Task OnInitializedAsync()
+  protected override async Task OnInitializedAsync()
   {
-    return base.OnInitializedAsync();
+    await base.OnInitializedAsync();
+
+    try
+    {
+      ViewModel.Load(); // -> Inicia el contenedor de credenciales
+    }
+    catch(Exception ex)
+    {
+      await DialogService.ShowMessageBox("Error", ex.Message);
+    }
   }
 
   private Func<Models.PasswordCredential, bool> QuickFilter => x =>
