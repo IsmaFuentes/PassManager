@@ -90,11 +90,18 @@
 
     try
     {
-      ViewModel.Load(); // -> Inicia el contenedor de credenciales
+      await ViewModel.Load(); // -> Inicia el contenedor de credenciales
     }
     catch(Exception ex)
     {
-      await DialogService.ShowMessageBox("Error", ex.Message);
+      System.Diagnostics.Debug.WriteLine(ex.Message);
+      bool? shouldDelete = await DialogService
+        .ShowMessageBox("Error", "Access to password repository has been lost, the decryption failed. Select 'Ok' to delete the file.", yesText: "Ok", cancelText: "Cancel");
+      
+      if(shouldDelete == true)
+      {
+        ViewModel.DeleteRepository();
+      }
     }
   }
 
@@ -123,7 +130,7 @@
   private async Task OnRemove(Models.PasswordCredential item)
   {
     bool? isDeleted = await DialogService
-      .ShowMessageBox("Warning", "Deleting can not be undone!", yesText: "Delete", cancelText: "Cancel");
+      .ShowMessageBox("Warning", "Deleting can not be undone!", yesText: "Ok", cancelText: "Cancel");
 
     if(isDeleted == true)
     {

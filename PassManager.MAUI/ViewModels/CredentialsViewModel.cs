@@ -1,16 +1,17 @@
-﻿using System.Collections.ObjectModel;
-using PassManager.MAUI.Models;
+﻿using PassManager.MAUI.Models;
 using PassManager.MAUI.Services;
+using System.Collections.ObjectModel;
 
 namespace PassManager.MAUI.ViewModels
 {
   public interface ICredentialsViewModel
   {
     public ObservableCollection<PasswordCredential> DataSource { get; }
-    public void Load();
+    public Task Load();
     public Task Save();
     public void Insert();
     public void Remove(PasswordCredential item);
+    public void DeleteRepository();
   }
 
   public class CredentialsViewModel : ICredentialsViewModel
@@ -22,13 +23,17 @@ namespace PassManager.MAUI.ViewModels
       _parser = parser;
     }
 
-    public void Load()
+    public async Task Load()
     {
+      DataSource.Clear();
       // System.IO.File.Delete(Path.Combine(FolderPath, "data.dat"));
       Directory.CreateDirectory(FolderPath);
-      var credentials = _parser.Parse<List<PasswordCredential>>(Helpers.StringCipher.Decrypt(Path.Combine(FolderPath, "data.dat"))) ?? [];
+      string decryptedString = await Helpers.StringCipher.Decrypt(RepositoryPath);
+      var credentials = _parser.Parse<List<PasswordCredential>>(decryptedString) ?? [];
       foreach(var item in credentials)
+      {
         DataSource.Add(item);
+      }
     }
 
     private string FolderPath
@@ -38,17 +43,23 @@ namespace PassManager.MAUI.ViewModels
 #if WINDOWS
         return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PassManager");
 #elif ANDROID
-        return Path.Combine(FileSystem.AppDataDirectory, "PassManger");
+        return Path.Combine(FileSystem.AppDataDirectory, "PassManager");
 #endif
         return string.Empty;
       }
+    }
+
+    private string RepositoryPath
+    {
+      get => Path.Combine(FolderPath, "data.dat");
     }
 
     public ObservableCollection<PasswordCredential> DataSource { get; private set; } = new();
 
     public async Task Save()
     {
-      await Task.Run(() => Helpers.StringCipher.Encrypt(_parser.Stringify(DataSource), Path.Combine(FolderPath, "data.dat")));
+      string json = _parser.Stringify(DataSource);
+      await Helpers.StringCipher.Encrypt(json, RepositoryPath);
     }
 
     public void Insert()
@@ -59,6 +70,14 @@ namespace PassManager.MAUI.ViewModels
     public void Remove(PasswordCredential item)
     {
       DataSource.Remove(item);
+    }
+
+    public void DeleteRepository()
+    {
+      if (System.IO.File.Exists(RepositoryPath))
+      {
+        System.IO.File.Delete(RepositoryPath);
+      }
     }
   }
 }
