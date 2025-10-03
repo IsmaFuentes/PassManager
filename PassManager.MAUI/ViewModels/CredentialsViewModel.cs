@@ -17,10 +17,12 @@ namespace PassManager.MAUI.ViewModels
   public class CredentialsViewModel : ICredentialsViewModel
   {
     private readonly IJsonParser _parser;
+    private readonly IFileEncryptor _encryptor;
 
-    public CredentialsViewModel(IJsonParser parser)
+    public CredentialsViewModel(IJsonParser parser, IFileEncryptor encryptor)
     {
       _parser = parser;
+      _encryptor = encryptor;
     }
 
     public async Task Load()
@@ -28,7 +30,7 @@ namespace PassManager.MAUI.ViewModels
       DataSource.Clear();
       // System.IO.File.Delete(Path.Combine(FolderPath, "data.dat"));
       Directory.CreateDirectory(FolderPath);
-      string decryptedString = await Helpers.StringCipher.Decrypt(RepositoryPath);
+      string decryptedString = await _encryptor.DecryptFromFile(RepositoryPath);
       var credentials = _parser.Parse<List<PasswordCredential>>(decryptedString) ?? [];
       foreach(var item in credentials)
       {
@@ -59,7 +61,7 @@ namespace PassManager.MAUI.ViewModels
     public async Task Save()
     {
       string json = _parser.Stringify(DataSource);
-      await Helpers.StringCipher.Encrypt(json, RepositoryPath);
+      await _encryptor.EncryptToFile(json, RepositoryPath);
     }
 
     public void Insert()

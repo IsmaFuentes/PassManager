@@ -20,6 +20,7 @@ namespace PassManager.MAUI
       builder.Services.AddMauiBlazorWebView();
       builder.Services.AddMudServices();
       builder.Services.AddSingleton<IJsonParser, JsonParser>();
+      builder.Services.AddSingleton<IFileEncryptor, FileEncryptor>();
       builder.Services.AddTransient<ICredentialsViewModel, CredentialsViewModel>();
 
 #if DEBUG
