@@ -2,7 +2,7 @@
 
 Multiplatform app done with MAUI Blazor Hybrid to manage credentials.
 
-- Suppoorts both Windows and Android
+- Supports both Windows and Android
 - Data is stored locally with encryption
 - Uses Blazor for it's UI (MudBlazor)
 
