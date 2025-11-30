@@ -2,6 +2,7 @@
 using MudBlazor.Services;
 using PassManager.MAUI.Services;
 using PassManager.MAUI.ViewModels;
+using PassManager.MAUI.ViewModels.Interfaces;
 
 namespace PassManager.MAUI
 {

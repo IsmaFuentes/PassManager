@@ -4,17 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace PassManager.MAUI.ViewModels
 {
-  public interface ICredentialsViewModel
-  {
-    public ObservableCollection<PasswordCredential> DataSource { get; }
-    public Task Load();
-    public Task Save();
-    public void Insert();
-    public void Remove(PasswordCredential item);
-    public void DeleteRepository();
-  }
-
-  public class CredentialsViewModel : ICredentialsViewModel
+  public class CredentialsViewModel : Interfaces.ICredentialsViewModel
   {
     private readonly IJsonParser _parser;
     private readonly IFileEncryptor _encryptor;
@@ -80,6 +70,11 @@ namespace PassManager.MAUI.ViewModels
       {
         System.IO.File.Delete(RepositoryPath);
       }
+
+#if ANDROID
+      //--- Nueva key
+      _encryptor.DeleteStoredKey();
+#endif
     }
   }
 }
